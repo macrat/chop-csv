@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	version = "0.2.0"
+	version = "0.2.1"
 
 	dateFormat = flag.String("date-format", "20060102", "Date format of the first column. See also https://pkg.go.dev/time#pkg-constants")
 	outputDir  = flag.String("out-dir", "chopped", "The output directory.")
