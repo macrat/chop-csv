@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -164,6 +165,31 @@ func Chop(inputPath string) {
 	w.Close()
 }
 
+// ChopRecursive is a directory recursive version of Chop function.
+func ChopRecursive(inputPath string) {
+	s, err := os.Stat(inputPath)
+	if err != nil {
+		log.Fatalf("failed to get file information: %s", err)
+	}
+
+	if !s.IsDir() {
+		Chop(inputPath)
+		return
+	}
+
+	log.Print("search CSV files from %s", inputPath)
+
+	err = filepath.Walk(inputPath, func(path string, info fs.FileInfo, err error) error {
+		if !info.IsDir() && filepath.Ext(path) == ".csv" {
+			Chop(path)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
 	flag.Usage = func() {
 		fmt.Println("Usage: chop-csv [OPTIONS] help|version|FILE...")
@@ -189,6 +215,6 @@ func main() {
 	}
 
 	for _, f := range flag.Args() {
-		Chop(f)
+		ChopRecursive(f)
 	}
 }
