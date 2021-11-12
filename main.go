@@ -177,7 +177,7 @@ func ChopRecursive(inputPath string) {
 		return
 	}
 
-	log.Print("search CSV files from %s", inputPath)
+	log.Printf("search CSV files from %s", inputPath)
 
 	err = filepath.Walk(inputPath, func(path string, info fs.FileInfo, err error) error {
 		if !info.IsDir() && filepath.Ext(path) == ".csv" {
