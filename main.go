@@ -146,7 +146,7 @@ func Chop(inputPath string) {
 		fpath := filepath.Join(*outputDir, filepath.FromSlash(t.Format("year=2006/month=1/day=2")))
 		fname := filepath.Join(fpath, csvName)
 		if w.Name() != fname {
-			if w == nil {
+			if w != nil {
 				w.Close()
 			}
 
